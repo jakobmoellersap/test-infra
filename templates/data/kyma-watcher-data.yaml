@@ -24,14 +24,14 @@ templates:
                   name: pre-main-kyma-watcher-skr-tests
                   command: "bash"
                   args:
-                    - "-c" 
+                    - "-c"
                     - "cd skr && make test" # run test make target of skr
                   branches:
                     - ^main$ # any pr against main triggers this
                 inheritedConfigs:
                   global:
                     - "image_buildpack-golang" # takes latest golang image
-                    - "jobConfig_default" 
+                    - "jobConfig_default"
                     - "jobConfig_presubmit"
                     - "build_labels" # default labels
               - jobConfig:
@@ -41,7 +41,7 @@ templates:
                     description: regularly executes the 'make test' command in the kyma-watcher 'kcp' directory.
                   command: "bash"
                   args:
-                    - "-c" 
+                    - "-c"
                     - "cd kcp && make test" # run test make target of kcp
                   branches:
                     - ^main$
@@ -49,7 +49,7 @@ templates:
                 inheritedConfigs:
                   global:
                     - "image_buildpack-golang" # takes latest golang image
-                    - "jobConfig_default" 
+                    - "jobConfig_default"
                     - "jobConfig_periodic"
                     - "build_labels" # default labels
               - jobConfig:
@@ -71,21 +71,21 @@ templates:
                   name: pre-main-kyma-watcher-kcp-tests
                   command: "bash"
                   args:
-                    - "-c" 
+                    - "-c"
                     - "cd kcp && make test" # run test make target of kcp
                   branches:
                     - ^main$ # any pr against main triggers this
                 inheritedConfigs:
                   global:
                     - "image_buildpack-golang" # takes latest golang image
-                    - "jobConfig_default" 
+                    - "jobConfig_default"
                     - "jobConfig_presubmit"
                     - "build_labels" # default labels
               - jobConfig:
                   labels:
                     preset-docker-push-repository-kyma: "true" # sets GCR Registry through DOCKER_PUSH_REPOSITORY
                   name: "pre-main-kyma-watcher-kcp-build"
-                  always_run: true
+                  run_if_changed: "^kcp/"
                   command: "/home/prow/go/src/github.com/kyma-project/test-infra/prow/scripts/build-generic.sh"
                   args:
                     - "/home/prow/go/src/github.com/kyma-project/kyma-watcher/kcp"
@@ -105,7 +105,7 @@ templates:
                   labels:
                     preset-docker-push-repository-kyma: "true" # sets GCR Registry through DOCKER_PUSH_REPOSITORY
                   name: "pre-main-kyma-watcher-skr-build"
-                  always_run: true
+                  run_if_changed: "^skr/"
                   command: "/home/prow/go/src/github.com/kyma-project/test-infra/prow/scripts/build-generic.sh"
                   args:
                     - "/home/prow/go/src/github.com/kyma-project/kyma-watcher/skr"
